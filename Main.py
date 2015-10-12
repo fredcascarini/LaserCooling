@@ -18,17 +18,17 @@ h = 6.62607e-34;
 k = 1.38064852e-23;
 
 Mca = 40*amu;
-Nion = 50;
+Nion = 25;
 lmd = 396.958e-9;
-tin = 298;
+tin = 1e5;
 i = 0;
 a = math.sqrt(k*tin/Mca);
 VCAI = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
 Pabs = 0.5;
 Pemm = 1.0/7.0; #ensure at least one of the numbers is a float
-timeint = 1;
-totaltime = 2000;
+timeint = 10000;
+totaltime = 2000000;
 
 for d in range(0,3):
     for p in range(0,Nion):

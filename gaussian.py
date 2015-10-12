@@ -12,16 +12,10 @@ def gaussian(f,r,v,d):
 
     c = 299792458 
 
-    while True:    
-        try:
-            g = np.float_(1)
-            g *= math.pow(f,2)
-            g /= -1*(16.0 * (math.log(2)))
-            diff= r*((v/c)-d)
-            g *= math.pow(diff,2)
-            g = math.exp(g)            
-            break
-        except OverflowError:
-            g = 0
-            break
+    g = np.float_(1)
+    g /= math.pow(f,2)
+    g *= -1*(4.0 * (math.log(2)))
+    diff= r*((v/c)+d)
+    g *= math.pow(diff,2)
+    g = math.exp(g)            
     return g

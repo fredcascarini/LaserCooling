@@ -1,14 +1,9 @@
-def Absorb(array, lista, lbda ):
-    h = 6.62607e-34;
-    array[lista][0] = array[lista][0] - (h/lbda);
-    return
 
 def Emit(array, listb, lbda, number):
     
     import math
     import random
     
-    h = 6.62607e-34;
     h = 6.62607e-34;
     rnumu = random.random();
     rnumv = random.random();
@@ -22,15 +17,19 @@ def Emit(array, listb, lbda, number):
     array[listb][2] = array[listb][2] + number * z * (h/lbda);
     return
     
-def threedabs(array, lista, lbda, number, mass ):
+def threedabs(array, lista, lbda, number, mass):
     from gaussian import gaussian as gsn
     
     c = 299792458 
     
-    fwhm = 9.0e5
-    resfreq = c/(396.847e-9) 
-    delta = ((array[lista][0]/(mass*1.0))/c) * 1
-    
+    fwhm = 5000*5e5
+    reswave = 396.847e-9
+    laswave = 396.859e-9
+    resfreq = c/reswave
+    lasfreq = c/laswave
+    delta = (lasfreq/resfreq)-1
+    #used wavelength = 396.958901nm
+
     gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), delta)
     gy = gsn(fwhm, resfreq, (array[lista][1]/(mass*1.0)), delta)
     gz = gsn(fwhm, resfreq, (array[lista][2]/(mass*1.0)), delta)
