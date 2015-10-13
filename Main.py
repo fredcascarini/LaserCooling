@@ -19,7 +19,7 @@ k = 1.38064852e-23;
 
 Mca = 40*amu;
 Nion = 25;
-lmd = 396.958e-9;
+lmd = 396.908e-9;
 tin = 1e5;
 i = 0;
 a = math.sqrt(k*tin/Mca);
