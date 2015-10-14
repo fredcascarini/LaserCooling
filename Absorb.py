@@ -22,12 +22,12 @@ def threedabs(array, lista, lbda, number, mass):
     
     c = 299792458 
     
-    fwhm = 5000*5e5
+    fwhm = 5e5
     reswave = 396.847e-9
-    laswave = 396.859e-9
+    laswave = reswave #+ 1e-14
     resfreq = c/reswave
     lasfreq = c/laswave
-    delta = (lasfreq/resfreq)-1
+    delta = (lasfreq-resfreq)
     #used wavelength = 396.958901nm
 
     gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), delta)

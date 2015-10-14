@@ -15,7 +15,7 @@ def gaussian(f,r,v,d):
     g = np.float_(1)
     g /= math.pow(f,2)
     g *= -1*(4.0 * (math.log(2)))
-    diff= r*((v/c)+d)
+    diff = r*(math.sqrt(((c+v)/(c-v))))- (r+d)
     g *= math.pow(diff,2)
     g = math.exp(g)            
     return g
