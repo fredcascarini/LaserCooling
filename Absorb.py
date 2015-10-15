@@ -31,14 +31,14 @@ def threedabs(array, lista, lbda, number, mass):
     #used wavelength = 396.958901nm
 
     gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), delta)
-    gy = gsn(fwhm, resfreq, (array[lista][1]/(mass*1.0)), delta)
-    gz = gsn(fwhm, resfreq, (array[lista][2]/(mass*1.0)), delta)
     
-    gt = gx + gy + gz
+    gt = 0
+    if gx > 0:
+        gt = 1
+
     
     h = 6.62607e-34;
+    
     array[lista][0] = array[lista][0] - gx * number * (h/lbda);
-    array[lista][1] = array[lista][1] - gy * number * (h/lbda);
-    array[lista][2] = array[lista][2] - gz * number * (h/lbda);
     
     return gt

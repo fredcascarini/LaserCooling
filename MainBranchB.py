@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 from trendline import trendline
 from thermalise import thermalise
 
+
+print('Declaring Variables******************************************')
 amu = 1.66053904e-27;
 h = 6.62607e-34;
 k = 1.38064852e-23;
@@ -20,27 +22,28 @@ k = 1.38064852e-23;
 Mca = 40*amu;
 Nion = 25;
 lmd = 396.908e-9;
-tin = 600;
+tin = 60;
 i = 0;
 a = math.sqrt(k*tin/Mca);
 VCAI = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
 Pabs = 0.5;
 Pemm = 1.0/7.0; #ensure at least one of the numbers is a float
-timeint = 10;
-totaltime = 20000;
+timeint = 1;
+totaltime = 50;
 VCAID = [];
 
-VCAIi = thermalise(VCAI, VCAID, Nion,tin,Mca,1)
-
+print('Generating initial distribution******************************')
+VCAIi, VCAID = thermalise(VCAI, VCAID, Nion,tin,Mca,1)
+    
 counterp = 1;
 counteri = 1;
 countdown = 0
-print('********************************************************************')
+print('Initialised**************************************************')
 for time in range(0,(totaltime+timeint),timeint):
     countdown1 = (totaltime-time+1)/(10*timeint);
     if (countdown1 != countdown):   
-        print(countdown1)
+        print "%03d**********************************************************"% countdown1
     countdown = countdown1
     for p in range(0,Nion):
         random.seed()
@@ -53,24 +56,28 @@ for time in range(0,(totaltime+timeint),timeint):
             gt = threedabs(VCAID,p,lmd, number, Mca);
             if (gt != 0.0):
                 VCAID[p][3] = 1;
-                np.add.at(I,p,number)
+            gt *= number
+            np.add.at(I,p,gt)
         elif (VCAID[p][3] == 1):
             number = sum(1 for item in r if item <= Pemm)
             Emit(VCAID,p,lmd, number);
             VCAID[p][3] = 0;
     VCAIDnum = np.array(VCAID)
-    VCAID = [];
-    meanattime = np.mean(VCAIDnum[:,0:3])
-    ttime = (math.pow(meanattime,2))/(3*k*Mca)
-    thermalise(VCAI, VCAID, Nion,ttime,Mca)
-    VCAIi = np.array(VCAIi)
-print('********************************************************************')
+    meanattimex = np.mean(VCAIDnum[:,0])
+    meanattimey = np.mean(VCAIDnum[:,1])
+    meanattimez = np.mean(VCAIDnum[:,2])
+    meanattime = math.sqrt(math.pow(meanattimex,2)+math.pow(meanattimey,2)+math.pow(meanattimez,2))
+    ttime = (math.pow(meanattime,2))/(k*Mca)
+    VCAID = thermalise(VCAI, VCAID, Nion,ttime,Mca)
+print('Running end code*********************************************')
 VCAIDnum = np.array(VCAID)
 VCAIDdiff = np.zeros((Nion,4));
 VCAIi = np.array(VCAIi)
 np.subtract(VCAIi, VCAIDnum, VCAIDdiff)
 V = (VCAIDdiff[:,0])/Mca
+plt.figure(2)
 plt.plot(V,I,'.')
+plt.legend()
 plt.ylabel('number of photons')
 plt.xlabel('amount slowed down')
 trendline(V,I)
