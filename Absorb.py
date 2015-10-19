@@ -20,25 +20,23 @@ def Emit(array, listb, lbda, number):
 def threedabs(array, lista, lbda, number, mass):
     from gaussian import gaussian as gsn
     
-    c = 299792458 
-    
-    fwhm = 5e5
-    reswave = 396.847e-9
-    laswave = reswave #+ 1e-14
-    resfreq = c/reswave
-    lasfreq = c/laswave
-    delta = (lasfreq-resfreq)
-    #used wavelength = 396.958901nm
-
-    gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), delta)
-    
-    gt = 0
-    if gx > 0:
-        gt = 1
-
-    
+    c = 299792458
     h = 6.62607e-34;
     
-    array[lista][0] = array[lista][0] - gx * number * (h/lbda);
+    fwhm = 10000*5e5
+    reswave = 396.847e-9
+    laswave = reswave + 0.04e-9
+    resfreq = c/reswave
+    lasfreq = c/laswave
+    #used wavelength = 396.958901nm
+
+    gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), lasfreq)
+    
+#    gt = 0    
+#    if gx > 0:
+    gt = 1
+    
+    if array[lista][0] > number * (h/lbda):
+        array[lista][0] = array[lista][0] -  number * (h/lbda);
     
     return gt
