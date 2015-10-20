@@ -18,4 +18,5 @@ def gaussian(f,r,v,l):
     diff = r*(math.sqrt(((c+v)/(c-v))))- l
     g *= math.pow(diff,2)
     g = math.exp(g)
+    
     return g

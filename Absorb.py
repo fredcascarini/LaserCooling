@@ -34,8 +34,6 @@ def threedabs(array, lista, lbda, number, mass):
 
     gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), lasfreq)
     
-    gt = gx
-    
     array[lista][0] = array[lista][0] - gx * number * (h/lbda);
     
-    return gt
+    return gx
