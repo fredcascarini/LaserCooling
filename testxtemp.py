@@ -14,7 +14,8 @@ def testxtemp(tup, mass):
     k = 1.38064852e-23;
     
     num = np.array(tup)
-    meanattime = np.mean(num[:,0])
+    meanattime = np.std(num[:,0])
     ttime = (math.pow(meanattime,2))/(k*mass)
-    print(ttime)
-    return
+    #print(ttime)
+    return ttime
+    

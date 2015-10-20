@@ -5,7 +5,7 @@ Created on Thu Oct 08 11:30:31 2015
 @author: tpsgroup
 """
 def gaussian(f,r,v,l):
-    #f = fwhm r = resonant freq  v = velocity  d = detuning = (new freq/r)/r
+    #f = fwhm r = resonant freq  v = velocity  l = laser freq
     
     import math
     import numpy as np
@@ -17,5 +17,5 @@ def gaussian(f,r,v,l):
     g *= -1*(4.0 * (math.log(2)))
     diff = r*(math.sqrt(((c+v)/(c-v))))- l
     g *= math.pow(diff,2)
-    g = math.exp(g)            
+    g = math.exp(g)
     return g
