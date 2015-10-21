@@ -16,18 +16,13 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
 
     k = 1.38064852e-23;
     
-    tempinit = temp
     for d in range(0,3):
         for p in range(0,N):
             sc = math.sqrt((k*temp)/mass)
             x = norm.rvs(scale = sc);
             x = mass * x;
             Ar[[p],[d]] = x;
-    
-    tempend = testxtemp(Ar,mass)
-    
-    print(tempinit-tempend)
-            
+                    
     p, x = np.histogram(sorted(Ar[:,0]), bins = 50)
     x = x[:-1] + (x[1]-x[0])/2
     n= 100
@@ -42,8 +37,7 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
 
     
     if (init == 1):
-        VCAi = Ar
-        VCAi = tuple(VCAi)
-        return VCAi, Arr  
+        Arry = tuple(Ar)
+        return Arry, Arr  
     
     return Arr

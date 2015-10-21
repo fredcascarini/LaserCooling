@@ -28,13 +28,16 @@ VCAI = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
 Pemm = 1/7.0; #ensure at least one of the numbers is a float
 timeint = 1
-totaltime = int(1e3);
+totaltime = int(100);
 VCAID = [];
 random.seed()
 
 print('Generating initial distribution******************************')
 VCAIi, VCAID = thermalise(VCAI, VCAID, Nion,tin,Mca,1) 
 ttin = testxtemp(VCAID,Mca) 
+VCAIDnum = np.array(VCAID)
+VCAIDdiff = np.subtract(VCAIi, VCAIDnum)
+
   
 print('Initialised, running loop************************************')
 counterp = 1;
@@ -70,25 +73,26 @@ for time in range(0,(totaltime+timeint),timeint):
         tmax = ttime
 
     VCAID = thermalise(VCAI, VCAID, Nion,ttime,Mca)
+    
 if tmax == tmin:
     print('no change')
 elif tmin < ttin:
     print('Decreased by %e' % (ttin-tmin))
 print('Varied by %f' % (tmax-tmin))
-#print('Running end code*********************************************')
-#VCAIDnum = np.array(VCAID)
-#VCAIDdiff = np.zeros((Nion,4));
-#VCAIi = np.array(VCAIi)
-#np.subtract(VCAIi, VCAIDnum, VCAIDdiff)
-#V = (VCAIDdiff[:,0])/Mca
-#plt.figure(2)
-#plt.plot(V,I,'.')
-#plt.legend()
-#plt.ylabel('number of photons')
-#plt.xlabel('amount slowed down')
-#trendline(V,I)
-#meaninit = np.mean(VCAIi[:,0:3])
-#Tinit = (math.pow(meaninit,2))/(3*k*Mca)
-#meanend = np.mean(VCAIDnum[:,0:3])
-#Tend = (math.pow(meanend,2))/(3*k*Mca)
-#meandiff = np.mean(VCAIDdiff[:,0:3])
+
+print('Running end code*********************************************')
+VCAIDnum = np.array(VCAID)
+VCAIi = np.array(VCAIi)
+VCAIDdiff = np.subtract(VCAIi, VCAIDnum)
+V = (VCAIDdiff[:,0])/Mca
+plt.figure(2)
+plt.plot(V,I,'.')
+plt.legend()
+plt.ylabel('number of photons')
+plt.xlabel('amount slowed down')
+trendline(V,I)
+meaninit = np.mean(VCAIi[:,0:3])
+Tinit = (math.pow(meaninit,2))/(3*k*Mca)
+meanend = np.mean(VCAIDnum[:,0:3])
+Tend = (math.pow(meanend,2))/(3*k*Mca)
+meandiff = np.mean(VCAIDdiff[:,0:3])
