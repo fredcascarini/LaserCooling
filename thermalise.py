@@ -37,7 +37,7 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
 
     
     if (init == 1):
-        Arry = tuple(Ar)
+        Arry = tuple(Arr)
         return Arry, Arr  
     
     return Arr

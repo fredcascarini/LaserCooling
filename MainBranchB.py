@@ -20,7 +20,7 @@ h = 6.62607e-34;
 k = 1.38064852e-23;
 
 Mca = 40*amu;
-Nion = 2000;
+Nion = 200;
 lmd = 396.908e-9;
 tin = 4;
 i = 0;
@@ -35,9 +35,6 @@ random.seed()
 print('Generating initial distribution******************************')
 VCAIi, VCAID = thermalise(VCAI, VCAID, Nion,tin,Mca,1) 
 ttin = testxtemp(VCAID,Mca) 
-VCAIDnum = np.array(VCAID)
-VCAIDdiff = np.subtract(VCAIi, VCAIDnum)
-
   
 print('Initialised, running loop************************************')
 counterp = 1;
