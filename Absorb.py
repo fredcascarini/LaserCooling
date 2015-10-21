@@ -20,8 +20,9 @@ def Emit(array, listb, lbda, number):
         
     return
     
-def threedabs(array, lista, lbda, number, mass):
+def Absorb(array, lista, lbda, number, mass):
     from gaussian import gaussian as gsn
+    import numpy as np
     
     c = 299792458
     h = 6.62607e-34;
@@ -32,8 +33,8 @@ def threedabs(array, lista, lbda, number, mass):
     resfreq = c/reswave
     lasfreq = c/laswave
 
-    gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), lasfreq)
+    gx = np.float_(1.0)    
+    #gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), lasfreq)
+    array[lista][0] = array[lista][0] - (number * (h/lbda));
     
-    array[lista][0] = array[lista][0] - gx * number * (h/lbda);
-    
-    return gx
+    return gx, array
