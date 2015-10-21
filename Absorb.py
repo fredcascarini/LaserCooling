@@ -1,10 +1,18 @@
 
-def Emit(array, listb, lbda, number):
-    
+def Emit(array, listb, lbda, mass, wavelength, r):
+    from fscatt import fscatt as fs
     import math
     import random
-    
+       
+    v = array[listb][0]/mass
+    dt = 1.0e-9
+    fscatt = fs(v, wavelength)
+    fscatt += 1.4e8
+    fscatt *= dt
+
     h = 6.62607e-34;
+    
+    number = sum(1 for item in r if item <= fscatt)    
     
     for i in range(number+1):    
         rnumu = random.random();
@@ -18,23 +26,21 @@ def Emit(array, listb, lbda, number):
         array[listb][1] = array[listb][1] + y * (h/lbda);
         array[listb][2] = array[listb][2] + z * (h/lbda);
         
-    return
+    return array, number
     
-def Absorb(array, lista, lbda, number, mass):
-    from gaussian import gaussian as gsn
-    import numpy as np
-    
-    c = 299792458
-    h = 6.62607e-34;
-    
-    fwhm = 5e5
-    reswave = 396.847e-9
-    laswave = reswave + 0.04e-9
-    resfreq = c/reswave
-    lasfreq = c/laswave
+def Absorb(array, lista, mass, wavelength, r):
+    from fscatt import fscatt as fs
 
-    gx = np.float_(1.0)    
-    #gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), lasfreq)
-    array[lista][0] = array[lista][0] - (number * (h/lbda));
+    h = 6.62607e-34;
+    dt = 1.0e-9
+    v = array[lista][0]/mass
+    fscatt = fs(v, wavelength)
+    fscatt *= dt
     
-    return gx, array
+    number = sum(1 for item in r if item <= fscatt)    
+    
+    recoil_momentum = (h/wavelength) * number
+    #print(recoil_momentum)
+    array[lista][0] = array[lista][0] - (number * recoil_momentum);
+
+    return array, number

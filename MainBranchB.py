@@ -26,10 +26,9 @@ tin = 4;
 i = 0;
 VCAI = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
-Pabs = 1;
 Pemm = 1/7.0; #ensure at least one of the numbers is a float
-timeint = 10;
-totaltime = 1000;
+timeint = 1
+totaltime = int(1e3);
 VCAID = [];
 random.seed()
 
@@ -52,20 +51,17 @@ for time in range(0,(totaltime+timeint),timeint):
     countdown = countdown1
 
     for p in range(0,Nion):
-#        r = np.zeros(timeint*10)
-#        for q in range(0,timeint*10):
-#            r[q] = random.random()
+        r = np.zeros(timeint*10)
+        for q in range(0,timeint*10):
+            r[q] = random.random()
         if (VCAID[p][3] != h):
-#            number = sum(1 for item in r if item <= Pabs)
-            gt, VCAID = Absorb(VCAID,p,lmd, 1000 , Mca);
-#            if (gt != 0.0):
-#                VCAID[p][3] = 1;
-            gt = 1 #*= number
+            VCAID, number = Absorb(VCAID,p, Mca, lmd, r);
+            VCAID[p][3] = 1;
+            gt = number
             np.add.at(I,p,gt)
-#        elif (VCAID[p][3] == 1):
-#            number = sum(1 for item in r if item <= Pemm)
-#            Emit(VCAID,p,lmd, number);
-#            VCAID[p][3] = 0;
+        elif (VCAID[p][3] == 1):
+            VCAID, number = Emit(VCAID,p,lmd, Mca, lmd, r);
+            VCAID[p][3] = 0;
 
     ttime = testxtemp(VCAID,Mca)
     if ttime < tmin:
@@ -73,7 +69,7 @@ for time in range(0,(totaltime+timeint),timeint):
     elif ttime > tmax:
         tmax = ttime
 
-    #VCAID = thermalise(VCAI, VCAID, Nion,ttime,Mca)
+    VCAID = thermalise(VCAI, VCAID, Nion,ttime,Mca)
 if tmax == tmin:
     print('no change')
 elif tmin < ttin:
