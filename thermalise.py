@@ -9,6 +9,7 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
     
     import math
     from scipy.stats import norm
+    import numpy as np
 
     k = 1.38064852e-23;
     
@@ -27,6 +28,9 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
     
     if (init == 1):
         Arry = tuple(Arr)
+        for p in range(0,N):
+            randbool = np.random.choice([0,1])
+            Ar[[p],[3]] = randbool
         return Arry, Arr  
     
     return Arr

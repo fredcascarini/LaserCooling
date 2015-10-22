@@ -5,7 +5,7 @@ Created on Thu Oct 22 10:14:34 2015
 @author: tpsgroup
 """
 
-def plotvel(A, smoothing):
+def plottemp(A, smoothing):
     import numpy as np
     from scipy.interpolate import spline
     import matplotlib.pyplot as plt
