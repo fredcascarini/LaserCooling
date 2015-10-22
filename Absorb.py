@@ -1,44 +1,46 @@
 
-def Emit(array, listb, lbda, number):
-    
+def Emit(array, listb, lbda, mass, wavelength, r):
+    from fscatt import fscatt as fs
     import math
     import random
-    
-    h = 6.62607e-34;
-    rnumu = random.random();
-    rnumv = random.random();
-    theta = 2 * math.pi * rnumu;
-    phi = math.acos((2 * rnumv) -1);
-    x = math.cos(theta)*math.sin(phi);
-    y = math.sin(theta)*math.sin(phi);
-    z = math.cos(phi);
-    array[listb][0] = array[listb][0] + number * x * (h/lbda);
-    array[listb][1] = array[listb][1] + number * y * (h/lbda);
-    array[listb][2] = array[listb][2] + number * z * (h/lbda);
-    return
-    
-def threedabs(array, lista, lbda, number, mass):
-    from gaussian import gaussian as gsn
-    
-    c = 299792458 
-    
-    fwhm = 5e5
-    reswave = 396.847e-9
-    laswave = reswave #+ 1e-14
-    resfreq = c/reswave
-    lasfreq = c/laswave
-    delta = (lasfreq-resfreq)
-    #used wavelength = 396.958901nm
+       
+    v = array[listb][0]/mass
+    dt = 1.0e-9
+    fscatt = fs(v, wavelength)
+    fscatt += 1.4e8
+    fscatt *= dt
 
-    gx = gsn(fwhm, resfreq, (array[lista][0]/(mass*1.0)), delta)
-    gy = gsn(fwhm, resfreq, (array[lista][1]/(mass*1.0)), delta)
-    gz = gsn(fwhm, resfreq, (array[lista][2]/(mass*1.0)), delta)
-    
-    gt = gx + gy + gz
-    
     h = 6.62607e-34;
-    array[lista][0] = array[lista][0] - gx * number * (h/lbda);
-    array[lista][1] = array[lista][1] - gy * number * (h/lbda);
-    array[lista][2] = array[lista][2] - gz * number * (h/lbda);
     
-    return gt
+    number = sum(1 for item in r if item <= fscatt)    
+    
+    for i in range(number+1):    
+        rnumu = random.random();
+        rnumv = random.random();
+        theta = 2 * math.pi * rnumu;
+        phi = math.acos((2 * rnumv) -1);
+        x = math.cos(theta)*math.sin(phi);
+        y = math.sin(theta)*math.sin(phi);
+        z = math.cos(phi);
+        array[listb][0] = array[listb][0] + x * (h/lbda);
+        array[listb][1] = array[listb][1] + y * (h/lbda);
+        array[listb][2] = array[listb][2] + z * (h/lbda);
+        
+    return array, number
+    
+def Absorb(array, lista, mass, wavelength, r):
+    from fscatt import fscatt as fs
+
+    h = 6.62607e-34;
+    dt = 1.0e-9
+    v = array[lista][0]/mass
+    fscatt = fs(v, wavelength)
+    fscatt *= dt
+    
+    number = sum(1 for item in r if item <= fscatt)    
+    
+    recoil_momentum = (h/wavelength) * number
+    #print(recoil_momentum)
+    array[lista][0] = array[lista][0] - (number * recoil_momentum);
+
+    return array, number
