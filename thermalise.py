@@ -9,10 +9,6 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
     
     import math
     from scipy.stats import norm
-    import numpy as np
-    from scipy.interpolate import UnivariateSpline
-    import matplotlib.pyplot as plt
-    from testxtemp import testxtemp
 
     k = 1.38064852e-23;
     
@@ -22,13 +18,6 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
             x = norm.rvs(scale = sc);
             x = mass * x;
             Ar[[p],[d]] = x;
-                    
-    p, x = np.histogram(sorted(Ar[:,0]), bins = 50)
-    x = x[:-1] + (x[1]-x[0])/2
-    n= 100
-    f = UnivariateSpline(x,p,s=n)
-    plt.plot(x,f(x),'.', label='%e' % temp)
-    plt.legend()
     
     Arr = []
     for b in range(0,int(N)):

@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from trendline import trendline
 from thermalise import thermalise
 from testxtemp import testxtemp
+from plotvel import plotvel
 
 print('Declaring Variables******************************************')
 amu = 1.66053904e-27;
@@ -22,13 +23,13 @@ k = 1.38064852e-23;
 Mca = 40*amu;
 Nion = 200;
 lmd = 396.908e-9;
-tin = 4;
+tin = 15;
 i = 0;
 VCAI = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
 Pemm = 1/7.0; #ensure at least one of the numbers is a float
 timeint = 1
-totaltime = int(100);
+totaltime = int(10000);
 VCAID = [];
 random.seed()
 
@@ -42,6 +43,8 @@ counteri = 1;
 countdown = 0
 tmin = 1e10
 tmax = 0
+niterations = (totaltime/timeint)+1
+Attime = np.ones(niterations)*1.0
 
 for time in range(0,(totaltime+timeint),timeint):
 
@@ -70,7 +73,8 @@ for time in range(0,(totaltime+timeint),timeint):
         tmax = ttime
 
     VCAID = thermalise(VCAI, VCAID, Nion,ttime,Mca)
-    
+
+    Attime[time] = ttime   
 if tmax == tmin:
     print('no change')
 elif tmin < ttin:
@@ -78,6 +82,7 @@ elif tmin < ttin:
 print('Varied by %f' % (tmax-tmin))
 
 print('Running end code*********************************************')
+plotvel(Attime,300)
 VCAIDnum = np.array(VCAID)
 VCAIi = np.array(VCAIi)
 VCAIDdiff = np.subtract(VCAIi, VCAIDnum)
