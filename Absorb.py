@@ -5,7 +5,7 @@ def Emit(array, listb, lbda, mass, wavelength, r):
     import random
        
     v = array[listb][0]/mass
-    dt = 1.0e-8
+    dt = 1.0e-9
     fscatt = fs(v, wavelength)
     fscatt += 1.4e8
     fscatt *= dt
@@ -32,7 +32,7 @@ def Absorb(array, lista, mass, wavelength, r):
     from fscatt import fscatt as fs
 
     h = 6.62607e-34;
-    dt = 1.0e-8
+    dt = 1.0e-9
     v = array[lista][0]/mass
     fscatt = fs(v, wavelength)
     fscatt *= dt

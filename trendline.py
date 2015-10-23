@@ -8,6 +8,8 @@ Created on Thu Oct 08 09:45:21 2015
 def trendline(xd, yd, order=1, c='r', alpha=1, Rval=False):
     """Make a line of best fit"""
     import numpy as np
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
 
     #Calculate trendline

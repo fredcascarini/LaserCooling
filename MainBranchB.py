@@ -9,6 +9,8 @@ import numpy as np
 import math
 import random
 from Absorb import Emit, Absorb
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from trendline import trendline
 from thermalise import thermalise
@@ -21,15 +23,15 @@ h = 6.62607e-34;
 k = 1.38064852e-23;
 
 Mca = 40*amu;
-Nion = 200;
+Nion = 2000; 
 lmd = 396.908e-9;
-tin = 900;
+tin = 600;
 i = 0;
 VCA = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
 Pemm = 1/7.0; #ensure at least one of the numbers is a float
 timeint = 1
-totaltime = int(9000);
+totaltime = int(10000);
 VCAtrack = [];
 random.seed()
 
@@ -45,6 +47,7 @@ tmin = ttin
 tmax = ttin
 niterations = (totaltime/timeint)+1
 Attime = np.ones(niterations)*1.0
+ttime1 = ttin
 
 for time in range(0,(totaltime+timeint),timeint):
 
@@ -72,7 +75,7 @@ for time in range(0,(totaltime+timeint),timeint):
         tmin = ttime
     elif ttime > tmax:
         tmax = ttime
-
+    ttime1 = ttime
     VCAtrack = thermalise(VCA, VCAtrack, Nion,ttime,Mca)
 
     Attime[time] = ttime
@@ -85,20 +88,21 @@ print('Varied by %f' % (tmax-tmin))
 print('Running end code*********************************************')
 print('Running plotvel**********************************************')
 halfsize = 0.5*len(Attime)
-plottemp(Attime[halfsize:],300)
+threequartersize = halfsize * 1.5
+plottemp(Attime[threequartersize:],300,1,'HRT')
 print('Finished plotvel*********************************************')
-VCAfinal = np.array(VCAtrack)
-VCAinit = np.array(VCAinit)
-VCAdiff = np.subtract(VCAinit, VCAfinal)
-V = (VCAdiff[:,0])/Mca
-plt.figure(2)
-plt.plot(V,I,'.')
-plt.legend()
-plt.ylabel('number of photons')
-plt.xlabel('amount slowed down')
-trendline(V,I)
-meaninit = np.mean(VCAinit[:,0:3])
-Tinit = (math.pow(meaninit,2))/(3*k*Mca)
-meanend = np.mean(VCAfinal[:,0:3])
-Tend = (math.pow(meanend,2))/(3*k*Mca)
-meandiff = np.mean(VCAdiff[:,0:3])
+#VCAfinal = np.array(VCAtrack)
+#VCAinit = np.array(VCAinit)
+#VCAdiff = np.subtract(VCAinit, VCAfinal)
+#V = (VCAdiff[:,0])/Mca
+#plt.figure(2)
+#plt.plot(V,I,'.')
+#plt.legend()
+#plt.ylabel('number of photons')
+#plt.xlabel('amount slowed down')
+#trendline(V,I)
+#meaninit = np.mean(VCAinit[:,0:3])
+#Tinit = (math.pow(meaninit,2))/(3*k*Mca)
+#meanend = np.mean(VCAfinal[:,0:3])
+#Tend = (math.pow(meanend,2))/(3*k*Mca)
+#meandiff = np.mean(VCAdiff[:,0:3])

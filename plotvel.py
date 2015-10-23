@@ -5,9 +5,11 @@ Created on Thu Oct 22 10:14:34 2015
 @author: tpsgroup
 """
 
-def plottemp(A, smoothing):
+def plottemp(A, smoothing = 300, save = 0, name = ''):
     import numpy as np
     from scipy.interpolate import spline
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
 
     Aindex = range(0,(len(A)))    
@@ -16,4 +18,8 @@ def plottemp(A, smoothing):
     A_smooth = spline(Aindex,A,xnew)
     
     plt.plot(xnew,A_smooth)
+    if (save == 1):
+        plt.savefig(name)
+        return
+    
     plt.show()
