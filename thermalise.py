@@ -10,17 +10,15 @@ def thermalise (Ar, Arr, N, temp, mass,init=0):
     import math
     from scipy.stats import norm
     import numpy as np
-    from testxtemp import testxtemp
-    y = 2*temp
+
     k = 1.38064852e-23;
-    while (int(y) != int(temp)):
-        for d in range(0,3):
-            for p in range(0,N):
-                sc = math.sqrt((k*temp)/mass)
-                x = norm.rvs(scale = sc);
-                x = mass * x;
-                Ar[[p],[d]] = x;
-        y = testxtemp(Ar,mass)
+    #while (int(0.1*y) != int(0.1*temp)):   
+    for d in range(0,3):
+        for p in range(0,N):
+            sc = math.sqrt((k*temp)/mass)
+            x = norm.rvs(scale = sc);
+            x = mass * x;
+            Ar[[p],[d]] = x;
         
     Arr = []
     for b in range(0,int(N)):
