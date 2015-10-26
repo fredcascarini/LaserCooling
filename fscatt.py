@@ -12,7 +12,7 @@ def fscatt(vtotx, lbda):
     pi = 3
     Gamma = 1.4e8 #from nist, units s^-1
     IdIsat = 1
-    delta = 40e-12
+    delta = Gamma
     
     gamma = 0.5*(Gamma**3)
     gamma *= IdIsat
