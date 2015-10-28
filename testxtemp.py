@@ -7,15 +7,15 @@ Created on Mon Oct 19 09:36:03 2015
 
 def testxtemp(tup, mass):
     import numpy as np
-    import math
     
     #used for debugging/testing
     
     k = 1.38064852e-23;
     
     num = np.array(tup)
-    meanattime = np.std(num[:,0])
-    ttime = (math.pow(meanattime,2))/(k*mass)
+    vel = num/mass
+    stdattime = np.std(vel[:,0], dtype=np.float64)
+    ttime = (stdattime**2)*(mass/k)
     #print(ttime)
     return ttime
     

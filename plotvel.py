@@ -14,10 +14,11 @@ def plottemp(A, smoothing = 300, save = 0, name = ''):
     Aindex = np.array(Aindex)
     xnew = np.linspace(Aindex.min(),Aindex.max(),smoothing)
     A_smooth = spline(Aindex,A,xnew)
-    
+    plt.clf()
     plt.plot(xnew,A_smooth)
     if (save == 1):
         plt.savefig(name)
         return
-    plt.show()
+    else:
+        plt.show()
     

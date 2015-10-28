@@ -23,15 +23,15 @@ h = 6.62607e-34;
 k = 1.38064852e-23;
 
 Mca = 40*amu;
-Nion = 20000; 
+Nion = 2000; 
 lmd = 396.908e-9;
 tin = 100;
 i = 0;
 VCA = np.zeros((Nion,4)); #4th dimension = state marker
 I = np.zeros(Nion);
 Pemm = 1/7.0; #ensure at least one of the numbers is a float
-timeint = 10
-totaltime = int(10000);
+timeint = 100
+totaltime = int(1e7);
 VCAtrack = [];
 random.seed()
 
