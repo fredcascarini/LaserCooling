@@ -9,7 +9,7 @@ def fscatt(vtotx, lbda):
     
 #    h = 6.62607e-34;
 #    k = 1.365019e6
-    pi = 3
+    pi = 3.14159265359
     Gamma = 1.4e8 #from nist, units s^-1
     IdIsat = 1
     delta = Gamma

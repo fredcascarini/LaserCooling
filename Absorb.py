@@ -6,15 +6,15 @@ def Emit(array, listb, lbda, mass, wavelength, r):
     
     v = array[listb][0]/mass
     dt = 1.0e-9
-    fscatt = fs(v, wavelength)
-    fscatt += 1.4e8
+    fscatt = fs(v, wavelength) #Probability of stimulated emission s^-1
+    fscatt += 1.4e8 #Probability of spontaneous emission s^-1 from NIST
     fscatt *= dt
     
     h = 6.62607e-34;
     
     number = sum(1 for item in r if item <= fscatt)    
     
-    for i in range(number+1):    
+    for i in range(number):    
         rnumu = random.random();
         rnumv = random.random();
         theta = 2 * math.pi * rnumu;
@@ -34,7 +34,7 @@ def Absorb(array, lista, mass, wavelength, r):
     h = 6.62607e-34;
     dt = 1.0e-9
     v = array[lista][0]/mass
-    fscatt = fs(v, wavelength)
+    fscatt = fs(v, wavelength) #Probability of stimulated absorption s^-1
     fscatt *= dt
     
     number = sum(1 for item in r if item <= fscatt)    
