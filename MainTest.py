@@ -6,16 +6,12 @@ Created on Wed Oct 14 15:53:47 2015
 """
 
 import numpy as np
-import math
 import random
 from Absorb import Emit, Absorb
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from trendline import trendline
 from thermalise import thermalise
-from testxtemp import testxtemp
-from plotvel import plottemp
+import matplotlib.pyplot as plt
 
 print('Declaring Variables******************************************')
 amu = 1.66053904e-27;
@@ -35,16 +31,17 @@ totaltime = int(1e7);
 VCAtrack = VCA;
 random.seed()
 ttin = 1e8
-VCAtime = np.zeros((Nion,(totaltime+1)/timeint))
+VCAtime = np.zeros((Nion,(totaltime/timeint)+1))
+delta = 1e7
+base = 150
 
 print('Generating initial distribution******************************')
 VCAinit, VCAtrack = thermalise(VCA, VCAtrack, Nion,tin,Mca,1)
-#ttin = testxtemp(VCAtrack,Mca)
 VCAinit = np.array(VCAinit)
 for n in range(Nion):
     m = int(n)
-    VCAinit[m][0] = (100+m)*Mca
-    VCAtrack[m][0] = (100+m)*Mca
+    VCAinit[m][0] = (base+m)*Mca
+    VCAtrack[m][0] = (base+m)*Mca
 
 print('Initialised, running loop************************************')
 counterp = 1;
@@ -68,50 +65,18 @@ for time in range(0,(totaltime+timeint),timeint):
         for q in range(0,timeint*10):
             r[q] = random.random()
         if (VCAtrack[p][3] != h):
-            VCAtrack, number = Absorb(VCAtrack,p, Mca, lmd, r);
+            VCAtrack, number = Absorb(VCAtrack,p, Mca, lmd, r, delta);
             if number != 0:
                 VCAtrack[p][3] = 1;
                 np.add.at(I,p,number)
         elif (VCAtrack[p][3] == 1):
-            VCAtrack, number = Emit(VCAtrack,p,lmd, Mca, lmd, r);
+            VCAtrack, number = Emit(VCAtrack,p,lmd, Mca, r, delta);
             if number != 0:
                 VCAtrack[p][3] = 0;
-    #tafter = testxtemp(VCAtrack,Mca)
-    #tdiff = tafter-tbefore
-    #ttrack = ttin + tdiff
-    #ttime = tafter
-    #if ttime < tmin:
-    #    tmin = ttime
-    #elif ttime > tmax:
-    #    tmax = ttime
-    #VCAtrack = thermalise(VCA, VCAtrack, Nion,ttime,Mca)
+
     for N in range(Nion):
         VCAtime[N,time/timeint] = VCAtrack[N][0]/Mca
-    #Attime[time/timeint] = ttrack
-#if tmax == tmin:
-#    print('no change')
-#elif tmin < ttin:
-#    print('Decreased by %e' % (ttin-tmin))
-#print('Varied by %f' % (tmax-tmin))
-#
-#print('Running end code*********************************************')
-#print('Running plotvel**********************************************')
-#halfsize = 0.5*len(Attime)
-#threequartersize = halfsize * 1.5
-#plottemp(Attime[threequartersize:],300,1,'3')
-#print('Finished plotvel*********************************************')
-#VCAfinal = np.array(VCAtrack)
-#VCAinit = np.array(VCAinit)
-#VCAdiff = np.subtract(VCAinit, VCAfinal)
-#V = (VCAdiff[:,0])/Mca
-#plt.figure(2)
-#plt.plot(V,I,'.')
-#plt.legend()
-#plt.ylabel('number of photons')
-#plt.xlabel('amount slowed down')
-#trendline(V,I)
-#meaninit = np.mean(VCAinit[:,0:3])
-#Tinit = (math.pow(meaninit,2))/(3*k*Mca)
-#meanend = np.mean(VCAfinal[:,0:3])
-#Tend = (math.pow(meanend,2))/(3*k*Mca)
-#meandiff = np.mean(VCAdiff[:,0:3])
+plt.clf()
+for N in range(Nion):
+    plt.plot(VCAtime[N][:])
+plt.savefig('delta %s' % str(delta))

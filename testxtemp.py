@@ -7,9 +7,7 @@ Created on Mon Oct 19 09:36:03 2015
 
 def testxtemp(tup, mass):
     import numpy as np
-    
-    #used for debugging/testing
-    
+        
     k = 1.38064852e-23;
     
     num = np.array(tup)
